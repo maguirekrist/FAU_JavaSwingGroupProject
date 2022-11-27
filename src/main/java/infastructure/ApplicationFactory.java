@@ -16,9 +16,10 @@ public class ApplicationFactory {
         //Initialize repositories
         JsonRepository<Product> productsRepository = new JsonRepository<>("products", new TypeToken<ArrayList<Product>>(){});
         JsonRepository<Product> shoppingCartRepository = new JsonRepository<>("shopping_cart", new TypeToken<ArrayList<Product>>(){});
+        JsonRepository<User> userRepository = new JsonRepository<>("users", new TypeToken<>(){});
 
         javax.swing.SwingUtilities.invokeLater(() -> {
-            new ViewManager(productsRepository, shoppingCartRepository);
+            new ViewManager(productsRepository, shoppingCartRepository, userRepository);
         });
 
 //        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

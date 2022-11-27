@@ -5,7 +5,7 @@ import model.Entity;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class MemoryRepository<T extends Entity> implements IRepository<T> {
+public class MemoryRepository<T extends Entity> extends Observable implements IRepository<T> {
 
     @Override
     public T getById(int id) {

@@ -6,7 +6,6 @@ import model.User;
 import model.UserType;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginView extends JPanel implements Observer<User> {
