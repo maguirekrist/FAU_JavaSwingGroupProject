@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class JsonRepository<T extends Entity> implements IRepository<T> {
+public class JsonRepository<T extends Entity> extends Observable implements IRepository<T> {
 
     private Collection<T> aggregate = new ArrayList<>();
     private String _className;

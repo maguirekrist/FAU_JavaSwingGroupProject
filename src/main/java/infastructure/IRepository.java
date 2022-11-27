@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Predicate;
 
-public interface IRepository<T extends Entity> {
+public interface IRepository<T extends Entity> extends IObservable {
 
     T getById(int id);
 

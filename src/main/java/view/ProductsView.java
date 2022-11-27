@@ -10,21 +10,21 @@ import model.UserType;
 import javax.swing.*;
 import java.awt.*;
 
-public class ProductsView extends JPanel implements Observer<ShoppingCart> {
+public class ProductsView extends JPanel implements Observer<IRepository<Product>> {
 
     private IRepository<Product> _products;
 
     public ProductsView(IRepository<Product> products) {
         this._products = products;
+        initializeComponents();
+    }
 
-        User user = new User(
-                "maguireK",
-                "pass123",
-                UserType.CUSTOMER
-        );
+    private void initializeComponents() {
+        this.removeAll();
 
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+
         JPanel panel = new JPanel();
 
         GridLayout grid = new GridLayout(0,2);
@@ -32,16 +32,16 @@ public class ProductsView extends JPanel implements Observer<ShoppingCart> {
         grid.setVgap(5);
 
         panel.setLayout(grid);
-        for(Product product : products.list())
+        for(Product product : _products.list())
         {
             panel.add(new ProductCardView(product));
         }
-
         this.add(panel, gbc);
     }
 
     @Override
-    public void update(ShoppingCart obj) {
-
+    public void update(IRepository<Product> obj) {
+        _products = obj;
+        initializeComponents();
     }
 }

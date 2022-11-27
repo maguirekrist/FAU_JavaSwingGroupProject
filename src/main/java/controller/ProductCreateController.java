@@ -37,6 +37,7 @@ public class ProductCreateController {
 
             _productRepository.insert(newProduct);
             _productRepository.save();
+            _productRepository.notifyObservers();
             _viewManager.changeView(Views.Home);
         });
     }
