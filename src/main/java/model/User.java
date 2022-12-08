@@ -6,7 +6,6 @@ public class User extends Entity {
     private final String username;
     private final String password;
     private final UserType userType;
-    private boolean validLogin;
 
     public User(String username, String password, UserType type) {
         super();
@@ -15,13 +14,6 @@ public class User extends Entity {
         this.userType = type;
     }
 
-    public boolean isValidLogin() {
-        return validLogin;
-    }
-
-    public void setValidLogin(boolean validLogin) {
-        this.validLogin = validLogin;
-    }
 
     public String getUsername() {
         return username;

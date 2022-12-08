@@ -1,12 +1,15 @@
 package view.components;
 
+import infastructure.Observer;
+import infastructure.UserSession;
 import model.User;
 import model.UserType;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
-public class MenuBar extends JMenuBar {
+public class MenuBar extends JMenuBar implements Observer<UserSession> {
 
     private JMenuItem _logout;
     private JMenuItem _addProduct;
@@ -15,12 +18,14 @@ public class MenuBar extends JMenuBar {
     private JMenu _homeMenu;
     private JMenu _shoppingCartMenu;
 
-    public MenuBar(User user) {
-        this.activeUser = user;
+    private JMenu _accountMenu;
+
+    public MenuBar() {
         initializeComponents();
     }
 
     private void initializeComponents() {
+        this.removeAll();
         this.setBorderPainted(true);
 
         _homeMenu = new JMenu("Home");
@@ -28,22 +33,22 @@ public class MenuBar extends JMenuBar {
 
         this.add(Box.createHorizontalGlue());
 
-        JMenu accountMenu = new JMenu("Account");
+        _accountMenu = new JMenu("Account");
+
         _logout = new JMenuItem("Logout");
         _addProduct = new JMenuItem("Add new product");
         _myStore = new JMenuItem("My products");
 
-        accountMenu.add(_logout);
-        if(activeUser.getUserType() == UserType.SELLER) {
-            accountMenu.add(_myStore);
-            accountMenu.add(_addProduct);
-        }
-        this.add(accountMenu);
+        _accountMenu.add(_logout);
+        _accountMenu.add(_myStore);
+        _accountMenu.add(_addProduct);
 
-        if(activeUser.getUserType() == UserType.CUSTOMER) {
-            _shoppingCartMenu = new JMenu("My Cart");
-            this.add(_shoppingCartMenu);
-        }
+        _shoppingCartMenu = new JMenu("My Cart");
+        this.add(_shoppingCartMenu);
+
+        this.add(_accountMenu);
+
+        toggleVisibility();
     }
 
     public void handleLogout(ActionListener e) {
@@ -62,10 +67,35 @@ public class MenuBar extends JMenuBar {
         _myStore.addActionListener(e);
     }
 
-    public void handleHome(ActionListener e) {
-        _homeMenu.addActionListener(e);
+    public void handleHome(MouseAdapter e) {
+        _homeMenu.addMouseListener(e);
     }
 
-    private User activeUser;
+    @Override
+    public void update(UserSession obj) {
+        System.out.println(UserSession.getSession().isAuthenticated());
+        toggleVisibility();
+    }
 
+    private void toggleVisibility() {
+        if(UserSession.getSession().isAuthenticated() && UserSession.getSession().getUser().getUserType() == UserType.SELLER) {
+            _myStore.setVisible(true);
+            _addProduct.setVisible(true);
+        } else {
+            _myStore.setVisible(false);
+            _addProduct.setVisible(false);
+        }
+
+        if(UserSession.getSession().isAuthenticated() && UserSession.getSession().getUser().getUserType() == UserType.CUSTOMER) {
+            _shoppingCartMenu.setVisible(true);
+        } else {
+            _shoppingCartMenu.setVisible(false);
+        }
+
+        if(UserSession.getSession().isAuthenticated()) {
+            _accountMenu.setVisible(true);
+        } else {
+            _accountMenu.setVisible(false);
+        }
+    }
 }

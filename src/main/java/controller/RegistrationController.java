@@ -30,7 +30,7 @@ public class RegistrationController {
 
         if(username.length() > 0 && password.length() > 0)
         {
-            _userRepository.insert(new User(username, password, UserType.CUSTOMER));
+            _userRepository.insert(new User(username, password, _view.isSeller() ? UserType.SELLER :  UserType.CUSTOMER));
             _userRepository.save();
             _viewManager.changeView(Views.Home);
         } else {

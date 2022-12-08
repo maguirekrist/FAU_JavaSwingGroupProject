@@ -1,5 +1,6 @@
 package view;
 
+import view.components.Form;
 import view.components.ImageFileChooser;
 
 import javax.swing.*;
@@ -11,10 +12,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Optional;
 
-public class RegisterView extends JPanel {
-    private int gridYLevel = 0;
-    private JPanel _formPanel;
-    private GridBagConstraints _formGrid;
+public class RegisterView extends Form {
     private JLabel _nameLabel;
     private JTextField _nameInput;
     private JLabel _passwordLabel;
@@ -22,18 +20,14 @@ public class RegisterView extends JPanel {
     private JLabel _formError;
     private JButton _registerButton;
 
+    private JCheckBox _typeCheckbox;
+
     public RegisterView() {
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        super("Register");
+    }
 
-        _formPanel = new JPanel();
-        _formPanel.setLayout(new GridBagLayout());
-        _formGrid = new GridBagConstraints();
-        _formGrid.fill = GridBagConstraints.HORIZONTAL;
-        _formGrid.gridy = 0;
-        _formGrid.gridx = 0;
-        _formGrid.weightx = 1;
-
+    @Override
+    public void constructForm() {
         _nameLabel = new JLabel("Name");
         _nameInput = new JTextField();
         _nameLabel.setLabelFor(_nameInput);
@@ -46,6 +40,11 @@ public class RegisterView extends JPanel {
 
         addComponentToForm(_passwordLabel);
         addComponentToForm(_passwordInput);
+
+        _typeCheckbox = new JCheckBox("Sign up as a seller?");
+
+        addComponentToForm(_typeCheckbox);
+
 
         _formError = new JLabel();
         _formError.setVisible(false);
@@ -60,14 +59,6 @@ public class RegisterView extends JPanel {
         _formGrid.fill = GridBagConstraints.HORIZONTAL;
 
         addComponentToForm(_registerButton);
-
-        _formPanel.setPreferredSize(new Dimension(400, 400));
-        _formPanel.setMaximumSize(new Dimension(400, 400));
-        _formPanel.setBorder(new CompoundBorder(
-                BorderFactory.createTitledBorder("Register"),
-                BorderFactory.createEmptyBorder(20, 20, 20, 20)));
-
-        this.add(_formPanel, gbc);
     }
 
     public String getUsername() {
@@ -78,6 +69,8 @@ public class RegisterView extends JPanel {
         return _passwordInput.getText();
     }
 
+    public boolean isSeller() { return _typeCheckbox.isSelected(); }
+
     public void assignRegistrationAction(ActionListener e) {
        _registerButton.addActionListener(e);
     }
@@ -86,10 +79,5 @@ public class RegisterView extends JPanel {
         _formError.setText("Invalid username or password");
         _formError.setForeground(Color.RED);
         _formError.setVisible(true);
-    }
-
-    private void addComponentToForm(JComponent c) {
-        _formGrid.gridy = gridYLevel++;
-        _formPanel.add(c, _formGrid);
     }
 }

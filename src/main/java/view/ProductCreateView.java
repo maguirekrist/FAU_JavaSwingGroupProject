@@ -1,5 +1,6 @@
 package view;
 
+import view.components.Form;
 import view.components.ImageFileChooser;
 
 import javax.swing.*;
@@ -13,12 +14,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Optional;
 
-public class ProductCreateView extends JPanel {
-
-    //Layout information
-    private int gridYLevel = 0;
-    private JPanel formPanel;
-    private GridBagConstraints formGrid;
+public class ProductCreateView extends Form {
 
     //Form Components
     private JLabel nameLabel;
@@ -40,17 +36,11 @@ public class ProductCreateView extends JPanel {
     private JLabel formError;
 
     public ProductCreateView() {
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        super("Create new product");
+    }
 
-        formPanel = new JPanel();
-        formPanel.setLayout(new GridBagLayout());
-        formGrid = new GridBagConstraints();
-        formGrid.fill = GridBagConstraints.HORIZONTAL;
-        formGrid.gridy = 0;
-        formGrid.gridx = 0;
-        formGrid.weightx = 1;
-
+    @Override
+    public void constructForm() {
         nameLabel = new JLabel("Name");
         nameInput = new JTextField();
         nameLabel.setLabelFor(nameInput);
@@ -112,20 +102,12 @@ public class ProductCreateView extends JPanel {
 
         createButton = new JButton("Create");
 
-        formGrid.ipady = 10;
-        formGrid.gridheight = 40;
-        formGrid.weighty = 20;
-        formGrid.fill = GridBagConstraints.HORIZONTAL;
+        _formGrid.ipady = 10;
+        _formGrid.gridheight = 40;
+        _formGrid.weighty = 20;
+        _formGrid.fill = GridBagConstraints.HORIZONTAL;
 
         addComponentToForm(createButton);
-
-        formPanel.setPreferredSize(new Dimension(400, 400));
-        formPanel.setMaximumSize(new Dimension(400, 400));
-        formPanel.setBorder(new CompoundBorder(
-        BorderFactory.createTitledBorder("Create New Product"),
-        BorderFactory.createEmptyBorder(20, 20, 20, 20)));
-
-        this.add(formPanel, gbc);
     }
 
     public String getName() {
@@ -154,11 +136,6 @@ public class ProductCreateView extends JPanel {
 
     public void submitProduct(ActionListener actionListener) {
         createButton.addActionListener(actionListener);
-    }
-
-    private void addComponentToForm(JComponent c) {
-        formGrid.gridy = gridYLevel++;
-        formPanel.add(c, formGrid);
     }
 
     public void setFormError(String error) {

@@ -1,6 +1,7 @@
 package infastructure;
 
 import com.google.gson.reflect.TypeToken;
+import infastructure.repository.UserRepository;
 import model.Product;
 import model.User;
 
@@ -15,11 +16,10 @@ public class ApplicationFactory {
 
         //Initialize repositories
         JsonRepository<Product> productsRepository = new JsonRepository<>("products", new TypeToken<ArrayList<Product>>(){});
-        JsonRepository<Product> shoppingCartRepository = new JsonRepository<>("shopping_cart", new TypeToken<ArrayList<Product>>(){});
-        JsonRepository<User> userRepository = new JsonRepository<>("users", new TypeToken<>(){});
+        UserRepository userRepository = new UserRepository("users", new TypeToken<>(){});
 
         javax.swing.SwingUtilities.invokeLater(() -> {
-            new ViewManager(productsRepository, shoppingCartRepository, userRepository);
+            new ViewManager(productsRepository, userRepository);
         });
 
 //        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {

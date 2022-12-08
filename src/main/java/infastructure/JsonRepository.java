@@ -10,8 +10,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
+
+/**
+ * Represents a repository for T utilizing JSON files as its storage medium
+ * @param <T> where T extends Entity
+ */
 public class JsonRepository<T extends Entity> extends Observable implements IRepository<T> {
 
     private Collection<T> aggregate = new ArrayList<>();
@@ -54,8 +60,8 @@ public class JsonRepository<T extends Entity> extends Observable implements IRep
     }
 
     @Override
-    public T getById(int id) {
-        return aggregate.stream().filter(e -> e.id == id).findFirst().orElseThrow();
+    public Optional<T> getById(int id) {
+        return aggregate.stream().filter(e -> e.id == id).findFirst();
     }
 
     @Override
@@ -87,5 +93,11 @@ public class JsonRepository<T extends Entity> extends Observable implements IRep
     @Override
     public void delete(T entity) {
         aggregate = aggregate.stream().filter(e -> e.id != entity.id).toList();
+    }
+
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

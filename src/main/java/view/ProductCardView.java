@@ -3,19 +3,23 @@ package view;
 import infastructure.Observer;
 import infastructure.ViewManager;
 import model.Product;
+import view.utility.LinkLabel;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class ProductCardView extends JPanel implements Observer<Product> {
+public class ProductCardView extends JPanel implements IProductView {
 
-    private Product product;
+    private Product _product;
+
+    private JButton _addButton;
 
     public ProductCardView(Product product) {
-        this.product = product;
+        this._product = product;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.WHITE);
@@ -27,20 +31,8 @@ public class ProductCardView extends JPanel implements Observer<Product> {
         JLabel label = new JLabel();
         label.setText(product.getLabel());
         label.setFont(new Font("Courier", Font.BOLD, 16));
+        label.addMouseListener(new LinkLabel());
 
-        label.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                label.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                label.setForeground(Color.BLUE);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                label.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                label.setForeground(Color.BLACK);
-            }
-        });
 
         JLabel desc = new JLabel();
         desc.setText(product.getDescription());
@@ -49,18 +41,22 @@ public class ProductCardView extends JPanel implements Observer<Product> {
         price.setText("$" + String.valueOf(product.getPrice()));
         price.setFont(new Font("Courier", Font.BOLD, 14));
 
-        JButton addToCart = new JButton();
-        addToCart.setText("Add to Cart");
+        _addButton = new JButton();
+        _addButton.setText("Add to Cart");
 
         this.add(label);
         this.add(desc);
         this.add(price);
-        this.add(addToCart);
+        this.add(_addButton);
     }
 
     @Override
-    public void update(Product obj) {
-
+    public void handleAddToCart(ActionListener e) {
+        _addButton.addActionListener(e);
     }
 
+    @Override
+    public Product getProduct() {
+        return _product;
+    }
 }
